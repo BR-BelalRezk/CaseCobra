@@ -156,7 +156,10 @@ export default function DesignPreview({
               </div>
             </div>
             <div className="mt-8 flex justify-end pb-12">
-              <Button onClick={handleCheckout} className="px-4 sm:px-6 lg:px-8">
+              <Button
+                onClick={() => handleCheckout()}
+                className="px-4 sm:px-6 lg:px-8"
+              >
                 Check out <ArrowRight className="size-4 ml-1.5 inline" />
               </Button>
             </div>
