@@ -37,12 +37,13 @@ export default function DesignPreview({
     ({ value }) => value === model
   )!;
 
-  const totalPrice =
-    material === "polycarbonate"
-      ? BASE_PRICE + PRODUCTS_PRICES.material.polycarbonate
-      : finish === "textured"
-      ? BASE_PRICE + PRODUCTS_PRICES.finish.textured
-      : BASE_PRICE;
+  let totalPrice = BASE_PRICE;
+  if (material === "polycarbonate") {
+    totalPrice += PRODUCTS_PRICES.material.polycarbonate;
+  }
+  if (finish === "textured") {
+    totalPrice += PRODUCTS_PRICES.finish.textured;
+  }
 
   const { mutate: createPaymentSession } = useMutation({
     mutationKey: ["get-checkout-session"],
@@ -147,7 +148,7 @@ export default function DesignPreview({
                   </div>
                 ) : null}
                 <div className="my-2 h-px bg-gray-200" />
-                <div className="flex items-center justify-center py-2">
+                <div className="flex items-center justify-center py-2 gap-1.5">
                   <p className=" font-semibold text-gray-900">Order total</p>
                   <p className="font-semibold text-gray-900">
                     {formatePrice(totalPrice / 100)}

@@ -97,20 +97,26 @@ export default function DesignConfigurator({
         width,
         height,
       } = phoneCaseRef.current!.getBoundingClientRect();
+
       const { left: containerLeft, top: containerTop } =
         containerRef.current!.getBoundingClientRect();
+
       const leftOffset = caseLeft - containerLeft;
       const topOffset = caseTop - containerTop;
+
       const actualX = renderedPosition.x - leftOffset;
       const actualY = renderedPosition.y - topOffset;
 
       const canvas = document.createElement("canvas");
-      (canvas.width = width), (canvas.height = height);
+      canvas.width = width;
+      canvas.height = height;
       const ctx = canvas.getContext("2d");
+
       const userImage = new Image();
       userImage.crossOrigin = "anonymous";
       userImage.src = imageUrl;
       await new Promise((resolve) => (userImage.onload = resolve));
+
       ctx?.drawImage(
         userImage,
         actualX,
@@ -118,15 +124,17 @@ export default function DesignConfigurator({
         renderedDimension.width,
         renderedDimension.height
       );
+
       const base64 = canvas.toDataURL();
       const base64Data = base64.split(",")[1];
+
       const blob = base64ToBlob(base64Data, "image/png");
       const file = new File([blob], "filename.png", { type: "image/png" });
 
       await startUpload([file], { configId });
-    } catch (error) {
+    } catch (err) {
       toast({
-        title: "Somthing went wrong",
+        title: "Something went wrong",
         description:
           "There was a problem saving your config, please try again.",
         variant: "destructive",
@@ -143,6 +151,7 @@ export default function DesignConfigurator({
     const byteArray = new Uint8Array(byteNumbers);
     return new Blob([byteArray], { type: mimeType });
   }
+
   return (
     <div className=" relative mt-20 grid grid-cols-1 lg:grid-cols-3 mb-20 pb-20">
       <div

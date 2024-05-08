@@ -51,12 +51,13 @@ export async function createCheckoutSession({
   }
   const { finish, material } = configuration;
 
-  const price =
-    finish === "textured"
-      ? BASE_PRICE + PRODUCTS_PRICES.finish.textured
-      : material === "polycarbonate"
-      ? BASE_PRICE + PRODUCTS_PRICES.material.polycarbonate
-      : BASE_PRICE;
+  let price = BASE_PRICE;
+  if (material === "polycarbonate") {
+    price += PRODUCTS_PRICES.material.polycarbonate;
+  }
+  if (finish === "textured") {
+    price += PRODUCTS_PRICES.finish.textured;
+  }
 
   let order: Order | undefined = undefined;
 
@@ -90,7 +91,7 @@ export async function createCheckoutSession({
   const stripeSession = await stripe.checkout.sessions.create({
     success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/thank-you?orderId=${order.id}`,
     cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/configure/preview?id=${configuration.id}`,
-    payment_method_types: ["card", "paypal"],
+    payment_method_types: ["card"],
     mode: "payment",
     shipping_address_collection: { allowed_countries: ["DE", "US"] },
     metadata: {
@@ -122,4 +123,30 @@ export const getAuthStatus = async () => {
   }
 
   return { success: true };
+};
+
+export const getPaymentStatus = async ({ orderId }: { orderId: string }) => {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+
+  if (!user?.id || !user?.email) {
+    throw new Error("You need to be logged in to view this page.");
+  }
+  const order = await db.order.findFirst({
+    where: { id: orderId, userId: user.id },
+    include: {
+      billingAddress: true,
+      configuration: true,
+      shippingAddress: true,
+      user: true,
+    },
+  });
+  if (!order) {
+    throw new Error("This Error does not exist.");
+  }
+  if (order.isPaid) {
+    return order;
+  } else {
+    return false;
+  }
 };
