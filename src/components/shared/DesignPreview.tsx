@@ -29,7 +29,7 @@ export default function DesignPreview({
   useEffect(() => {
     setShowConfetti(true);
   }, []);
-  const { color, model, finish, material } = configuration;
+  const { color, model, finish, material, croppedImageUrl } = configuration;
   const tw = COLORS.find(
     (supportedColor) => supportedColor.value === color
   )?.tw;
@@ -88,7 +88,7 @@ export default function DesignPreview({
       <div className="mt-20 flex flex-col items-center md:grid text-sm sm:grid-cols-12 sm:grid-rows-1 sm:gap-x-6 md:gap-x-8 lg:gap-x-12">
         <div className="md:col-span-4 lg:col-span-3 md:row-span-2 md:row-end-2">
           <Phone
-            imgSrc={configuration.croppedImageUrl!}
+            imgSrc={croppedImageUrl!}
             className={cn(`bg-${tw}`, "max-w-[150px] md:max-w-full")}
           />
         </div>
