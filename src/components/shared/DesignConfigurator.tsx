@@ -149,7 +149,6 @@ export default function DesignConfigurator({
 
   function base64ToBlob(base64Data: string, contentType: string): Blob {
     const byteArray = Buffer.from(base64Data, "base64");
-
     return new Blob([byteArray], { type: contentType });
   }
 
