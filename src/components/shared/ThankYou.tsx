@@ -111,7 +111,7 @@ export default function ThankYou() {
               <p className=" font-medium text-zinc-900">Payment status</p>
               <p className="mt-2 text-zinc-700">Paid</p>
             </div>
-            <div>
+            <div className="mt-3">
               <p className=" font-medium text-zinc-900">Shipping metthod</p>
               <p className="mt-2 text-zinc-700">
                 DHL, takes up to 3 working days
