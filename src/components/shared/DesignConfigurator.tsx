@@ -34,6 +34,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { saveConfig as _saveConfig, SaveConfigArgs } from "@/server";
 import { useRouter } from "next/navigation";
+import { phoneTemplate } from "@/assets";
 
 interface DesignConfiguratorProps {
   configId: string;
@@ -171,7 +172,7 @@ export default function DesignConfigurator({
             <NextImage
               fill
               alt="phone image"
-              src="/phone-template.png"
+              src={phoneTemplate}
               className="pointer-events-none z-50 select-none"
             />
           </AspectRatio>
@@ -251,14 +252,14 @@ export default function DesignConfigurator({
                   <Label>Color: {options.color.label}</Label>
                   <div className="mt-3 flex items-center space-x-3">
                     {COLORS.map((color) => (
-                      <RadioGroup.Option
+                      <Radio
                         key={color.label}
                         value={color}
-                        className={({ active, checked }) =>
+                        className={({ checked }) =>
                           cn(
                             "relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 active:ring-0 focus:ring-0 active:outline-none focus:outline-none border-2 border-transparent",
                             {
-                              [`border-${color.tw}`]: active || checked,
+                              [`border-${color.tw}`]: checked,
                             }
                           )
                         }
@@ -269,7 +270,7 @@ export default function DesignConfigurator({
                             "h-8 w-8 rounded-full border border-black border-opacity-10"
                           )}
                         />
-                      </RadioGroup.Option>
+                      </Radio>
                     ))}
                   </div>
                 </RadioGroup>
