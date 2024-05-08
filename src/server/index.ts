@@ -2,7 +2,7 @@
 
 import { BASE_PRICE, PRODUCTS_PRICES } from "@/config/products";
 import { db } from "@/db";
-import { Order } from "@prisma/client";
+import { Order, OrderStatus } from "@prisma/client";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import {
   CaseColor,
@@ -149,4 +149,19 @@ export const getPaymentStatus = async ({ orderId }: { orderId: string }) => {
   } else {
     return false;
   }
+};
+
+export const changeOrderStatus = async ({
+  id,
+  newStatus,
+}: {
+  id: string;
+  newStatus: OrderStatus;
+}) => {
+  await db.order.update({
+    where: { id },
+    data: {
+      status: newStatus,
+    },
+  });
 };
